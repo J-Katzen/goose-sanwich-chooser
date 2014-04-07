@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html ng-app="gooseSandwich" lang="en">
+
+<head>
+<!-- Latest compiled and minified JavaScript -->
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+</head>
+
+<body ng-controller="OrderCrtl">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <h1 style="text-align:center;">Goose Roulette Sandwich Picker</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8 col-xs-12">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="roulette-controls" style="text-align: center; margin: 20px auto;">
+                            <button id="spin" class="btn btn-primary">SPIN</button>
+                            <button id="order" class="btn btn-warning">ORDER</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="sandwich-spinner" style="display:none;">
+                            <img data-sandwich="comp-wich" src="/images/chomp.png">
+                            <img data-sandwich="coin-wich" src="/images/coin.png">
+                            <img data-sandwich="flower-wich" src="/images/flower.png">
+                            <img data-sandwich="mushroom-wich" src="/images/mshroom.png">
+                            <img data-sandwich="star-wich" src="/images/star.png">
+                            <img data-sandwich="random-wich" src="/images/random.png">
+                        </div>
+                    </div>
+                </div>
+                <!-- roulette and shit -->
+            </div>
+            <div class="col-md-4 col-xs-12">
+                <div class="row">
+                    <div class="col-xs-12 ord-title">
+                        <h2 style="text-align:center;">Orders</h2>
+                    </div>
+                </div>
+                <div class="order-list">
+                    <div ng-repeat="order in orders">
+                        <h4>{{order.name}}   {{order.sandwich}}  {{order.created}}</h4>
+                    </div>
+                </div>
+                <!-- put the current orders -->
+            </div>
+        </div>
+    </div>
+    <!-- modals and shit here -->
+
+
+    <!-- javascript shit here -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular-route.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular-sanitize.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular-animate.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <script src="/jquery-plugins/roulette.min.js"></script>
+    <script src="/socketio/socket.io.min.js"></script>
+    <script src="/controllers/orders.js"></script>
+    <script src="/services/goosesocket.js"></script>
+    <script src="/app.js"></script>
+
+    <script>
+        $(function() {
+            var spinner = $('.sandwich-spinner');
+
+            spinner.roulette();
+            $('#spin').click(function(){
+                var rand = Math.floor(Math.random()*6);
+                console.log(rand);
+                var option = {
+                    speed: 10,
+                    duration: 3,
+                    stopImageNumber: rand,
+                    startCallback: function() {
+                        $('#spin').attr('disabled', 'true');
+                    },
+                    stopCallback: function() {
+                        $('#spin').removeAttr('disabled');
+                    }
+                }
+                spinner.roulette('option', option);
+                spinner.roulette('start');
+            });
+        });
+    </script>
+
+</body>
+</html>
